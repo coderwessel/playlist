@@ -1,0 +1,32 @@
+- manipulate TrackList
+  - insert/add
+  - delete
+  - click to activate
+  - SkipNext
+  - SkipPrevious
+  - Reorder
+  - context modal
+
+- optional: drag to reorder
+
+
+- search from last.fm
+  - typeahead
+  - modal
+  -
+
+- play music from source
+  - audio element
+  - progressbar
+  - play/pause button
+  - use localhost streamer
+
+- save playlist
+- share playlist by route (../dRgft)
+- suggestions
+  - similar tracks
+  - albums
+    - add albums as playlist
+  - similar artists
+- partymode (Autoplay by suggestions)
+- cache music locally
