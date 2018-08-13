@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles';
@@ -11,6 +11,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import Downshift from 'downshift'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
+import { addTrack } from '../actions/tracklist'
 
 const styles = theme =>({
   textField: {
@@ -47,13 +48,47 @@ const styles = theme =>({
 })
 
 const suggestions = [
-  { label: 'toto - Rosanna' },
-  { label: 'Cure - Forest' },
-  { label: 'Prince - Kiss' },
-  { label: 'Metallica - Nothing else Matters' },
-  { label: 'David Bowie - Let\'s Dance' },
-  { label: 'Calvin Harris - Colors' }
+  { label: 'Toto - Rosanna',
+    artist: 'Toto',
+    title: 'Rosanna',
+    art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
+    duration: 241 },
+  { label: 'Cure - Forest',
+  artist: 'Cure',
+  title: 'Forest',
+  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
+  duration: 241 },
+  { label: 'Prince - Kiss',
+  artist: 'Prince',
+  title: 'Kiss',
+  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
+  duration: 241 },
+  { label: 'Metallica - Nothing else Matters',
+  artist: 'Metallica',
+  title: 'Nothing else Matters',
+  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
+  duration: 241 },
+  { label: 'David Bowie - Let\'s Dance',
+  artist: 'David Bowie',
+  title: 'Let\'s Dance',
+  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
+  duration: 241 },
+  { label: 'Calvin Harris - Colors',
+  artist: 'Calvin Harris',
+  title: 'Colors',
+  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
+  duration: 241 }
 ]
+
+// function handleMenuItemClick (track){
+//   // alert(`${track.label} was clicked`)
+//   // var flap = {artist,title,art,duration} = track
+//   addTrack({artist: track.artist,
+//     title:track.title,
+//     art:track.art,
+//     duration:track.duration})
+// }
+
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -72,7 +107,8 @@ function renderInput(inputProps) {
   );
 }
 
-function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
+function renderSuggestion({ suggestion, index, 
+    itemProps, highlightedIndex, selectedItem, handleMenuItemClick }) {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
@@ -85,8 +121,11 @@ function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, sele
       style={{
         fontWeight: isSelected ? 500 : 400,
       }}
+      onClick  =  {handleMenuItemClick.bind(this, suggestion)}
+      onSelect  =  {handleMenuItemClick.bind(this, suggestion)}
     >
       {suggestion.label}
+      
     </MenuItem>
   );
 }
@@ -97,6 +136,7 @@ renderSuggestion.propTypes = {
   itemProps: PropTypes.object,
   selectedItem: PropTypes.string,
   suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
+  handleMenuItemClick: PropTypes.func
 };
 
 function getSuggestions(inputValue) {
@@ -151,6 +191,7 @@ class SearchBarContainer extends React.PureComponent {
                     itemProps: getItemProps({ item: suggestion.label }),
                     highlightedIndex,
                     selectedItem,
+                    handleMenuItemClick: this.props.addTrack
                   }),
                 )}
               </Paper>
@@ -168,11 +209,11 @@ SearchBarContainer.propTypes = {
 };
 
 // TODO: How do I map the currently playing track in my state...
-const mapStateToProps = (state) => {
+const mapStateToProps = function (state) {
   return {
     tracklist: state.tracklist
   }
 }
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)
-export default withStyles(styles) (connect(mapStateToProps)(SearchBarContainer));
+export default withStyles(styles) (connect( null, {addTrack})(SearchBarContainer));

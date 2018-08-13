@@ -1,15 +1,21 @@
-// import {ADD_ALBUM, SET_ALBUMS} from '../actions/albums'
+import {ADD_TRACK, DEL_TRACK} from '../actions/tracklist'
 
 const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
-  default:
+    case ADD_TRACK:
+    return [...state,action.payload]
+    
+    case DEL_TRACK:
+    return [...state].filter( (item,index) => index != action.payload)
+
+    default:
     return state
   }
 }
 
-const initialState =
+const initialState = 
 [
-  {id:1,
+  {
   active: false,
   artist: 'Duran Duran',
   title: 'rio',
@@ -26,7 +32,7 @@ const initialState =
   {id:6,
   active: false,
   artist: 'Fluran Duran',
-  title: 'Crio',
+  title: 'C6rio',
   art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
   duration: 205
   },
