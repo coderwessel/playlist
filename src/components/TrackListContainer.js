@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import TrackListItem from './TrackListItem.js'
-import {addTrack, delTrack} from '../actions/tracklist'
+import {addTrack, delTrack, activateTrack} from '../actions/tracklist'
 
 const styles = theme => ({
   container: {
@@ -27,6 +27,12 @@ const styles = theme => ({
 });
 
 class TrackListContainer extends PureComponent {
+
+  // TODO: Add drag and drop support, see https://codepen.io/adamaoc/pen/GoKZKE 
+
+
+
+
   
   render () {
     const { classes } = this.props;
@@ -41,6 +47,7 @@ class TrackListContainer extends PureComponent {
                             art={i.art} 
                             active={i.active} 
                             deleteaction={this.props.delTrack.bind(this,index)}
+                            activateaction={this.props.activateTrack.bind(this,index)}
               />)}
         </List>
       </div>
@@ -72,7 +79,7 @@ const mapStateToProps = function (state) {
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)
 export default withStyles(styles) (connect(mapStateToProps, 
-  {addTrack, delTrack}
+  {addTrack, delTrack, activateTrack}
 )(TrackListContainer))
 
 

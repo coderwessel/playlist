@@ -49,6 +49,11 @@ class TrackListItem extends React.PureComponent {
     this.props.deleteaction()
     this.setState({ anchorEl: null });
   };
+  
+  handlePlayNow = () => {
+    this.props.activateaction()
+    this.setState({ anchorEl: null });
+  };
 
 
   render () {
@@ -64,7 +69,7 @@ class TrackListItem extends React.PureComponent {
       <Avatar src={this.props.art} className={classes.avatar}>
           {(this.props.active)?<MusicNoteIcon/>:''}
       </Avatar>
-      <ListItemText onClick={this.help} primary={this.props.artist} secondary={this.props.title} />
+      <ListItemText onClick={this.props.activateaction} primary={this.props.artist} secondary={this.props.title} />
       <IconButton className={classes.menuButton} color="inherit" aria-label="MoreVert" onClick={this.handleClick}>
         <MoreVertIcon />
       </IconButton>
@@ -76,6 +81,7 @@ class TrackListItem extends React.PureComponent {
         >
           {/* {[ TODO: send this action array through props with proptypes */}
           {[ {text: "Delete", action: this.handleDelete},
+             {text: "Play Now", action: this.handlePlayNow},
              {text: "Play Next", action: this.handleClose},
              {text: "Move to Last", action: this.handleClose}
             ].map((item) => 
@@ -93,7 +99,8 @@ TrackListItem.propTypes = {
   artist: PropTypes.string.isRequired,
   art: PropTypes.string.isRequired,
   active: PropTypes.bool.isRequired,
-  deleteaction: PropTypes.func.isRequired
+  deleteaction: PropTypes.func.isRequired,
+  activateaction: PropTypes.func.isRequired
 };
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)

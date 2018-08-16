@@ -1,4 +1,4 @@
-import {ADD_TRACK, DEL_TRACK} from '../actions/tracklist'
+import {ACTIVATE_TRACK, ADD_TRACK, DEL_TRACK} from '../actions/tracklist'
 
 const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
@@ -8,6 +8,14 @@ const reducer = (state = initialState, action = {}) => {
     case DEL_TRACK:
     return [...state].filter( (item,index) => index != action.payload)
 
+    case ACTIVATE_TRACK:
+    return state.map( (item,index) => {
+      let itemcopy = item
+      if (index === action.payload) itemcopy.active=true
+        else if(itemcopy.active === true) itemcopy.active=false
+      return itemcopy
+    })
+    
     default:
     return state
   }
