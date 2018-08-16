@@ -83,7 +83,3 @@ export default withStyles(styles) (connect(mapStateToProps,
 )(TrackListContainer))
 
 
-//redux and material.ui cobined export
-// export default withStyles(styles)(connect(mapStateToProps,
-//     {  fetchAllGames }
-// )(GamesContainer))

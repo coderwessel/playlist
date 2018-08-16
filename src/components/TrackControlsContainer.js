@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
+import {activateNextTrack, activatePreviousTrack} from '../actions/tracklist'
 
 
 const styles = theme =>({
@@ -29,13 +30,15 @@ class TrackControlsContainer extends React.PureComponent {
     return (
       <div className={classes.container}>
           <TrackProgressBarContainer/>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Search">
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Search"
+          onClick ={this.props.activatePreviousTrack}>
             <SkipPreviousIcon />
           </IconButton>
           <IconButton className={classes.menuButton} color="inherit" aria-label="Search">
             <PlayArrowIcon />
           </IconButton>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Search">
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Search"
+          onClick ={this.props.activateNextTrack}>
             <SkipNextIcon />
           </IconButton>
       </div>
@@ -56,4 +59,4 @@ const mapStateToProps = (state) => {
 
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)
-export default withStyles(styles) (connect(mapStateToProps)(TrackControlsContainer));
+export default withStyles(styles) (connect(mapStateToProps, {activateNextTrack, activatePreviousTrack})(TrackControlsContainer));

@@ -1,6 +1,8 @@
 export const ADD_TRACK = 'ADD_TRACK'
 export const DEL_TRACK = 'DEL_TRACK'
 export const ACTIVATE_TRACK = 'ACTIVATE_TRACK'
+export const ACTIVATE_NEXT_TRACK = 'ACTIVATE_NEXT_TRACK'
+export const ACTIVATE_PREVIOUS_TRACK = 'ACTIVATE_PREVIOUS_TRACK'
 
 export function addTrack(track) {
     // return {
@@ -33,6 +35,22 @@ export function activateTrack(trackindex) {
         dispatch({
           type: ACTIVATE_TRACK,
           payload: trackindex
+        })
+    }
+}
+
+export function activateNextTrack() {
+    return function (dispatch){
+        dispatch({
+          type: ACTIVATE_NEXT_TRACK
+        })
+    }
+}
+
+export function activatePreviousTrack() {
+    return function (dispatch){
+        dispatch({
+          type: ACTIVATE_PREVIOUS_TRACK
         })
     }
 }

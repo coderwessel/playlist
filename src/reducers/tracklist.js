@@ -1,6 +1,7 @@
-import {ACTIVATE_TRACK, ADD_TRACK, DEL_TRACK} from '../actions/tracklist'
+import {ACTIVATE_TRACK, ACTIVATE_NEXT_TRACK, ACTIVATE_PREVIOUS_TRACK, ADD_TRACK, DEL_TRACK} from '../actions/tracklist'
 
 const reducer = (state = initialState, action = {}) => {
+  const currentTrack = state.findIndex ((index) => index.active) //find current active track index
   switch (action.type) {
     case ADD_TRACK:
     return [...state,action.payload]
@@ -15,6 +16,49 @@ const reducer = (state = initialState, action = {}) => {
         else if(itemcopy.active === true) itemcopy.active=false
       return itemcopy
     })
+
+    case ACTIVATE_NEXT_TRACK:
+      if (state.length === 0) return state // no tracks => do nothing
+      switch (currentTrack){
+      case -1: // no current track => make first track active
+        const newState = [...state]
+        newState[0].active=true
+        return newState
+
+      case state.length-1: // current == last track => do nothing
+        return state
+        
+      default: // deactivate current track and activate next track
+        const nextTrack = currentTrack+1
+        return state.map( (item,index) => {
+          let itemcopy = item
+          if (index === currentTrack) itemcopy.active = false
+          else if (index === nextTrack) itemcopy.active = true
+          return itemcopy
+        })
+      }
+      
+    case ACTIVATE_PREVIOUS_TRACK:
+      if (state.length === 0) return state // no tracks => do nothing
+      switch (currentTrack){
+      case -1: // no current track => make last track active
+        const newState = [...state]
+        newState[state.length-1].active=true
+        return newState
+
+      case 0: // current == first track => do nothing
+        return state
+        
+      default: // deactivate current track and activate previous track
+        const previousTrack = currentTrack-1
+        return state.map( (item,index) => {
+          let itemcopy = item
+          if (index === currentTrack) itemcopy.active = false
+          else if (index === previousTrack) itemcopy.active = true
+          return itemcopy
+        })
+      }
+      
     
     default:
     return state
