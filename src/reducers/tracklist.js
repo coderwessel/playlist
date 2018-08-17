@@ -1,7 +1,13 @@
-import {ACTIVATE_TRACK, ACTIVATE_NEXT_TRACK, ACTIVATE_PREVIOUS_TRACK, ADD_TRACK, DEL_TRACK} from '../actions/tracklist'
+import {ACTIVATE_TRACK, 
+  ACTIVATE_NEXT_TRACK, 
+  ACTIVATE_PREVIOUS_TRACK, 
+  ADD_TRACK, 
+  DEL_TRACK,
+  MOVE_TRACK} from '../actions/tracklist'
 
 const reducer = (state = initialState, action = {}) => {
   const currentTrack = state.findIndex ((index) => index.active) //find current active track index
+
   switch (action.type) {
     case ADD_TRACK:
     return [...state,action.payload]
@@ -58,7 +64,18 @@ const reducer = (state = initialState, action = {}) => {
           return itemcopy
         })
       }
-      
+    
+    case MOVE_TRACK:
+      if (action.payload.from >= 0 && action.payload.from < state.length &&
+        action.payload.to >= 0 && action.payload.to < state.length &&
+        action.payload.from != action.payload.to){
+          const source = state[action.payload.from]
+          const newstate = [...state]
+          newstate.splice(action.payload.from,1)
+          newstate.splice(action.payload.to,0,source)
+          return newstate  
+        }
+      else return state
     
     default:
     return state

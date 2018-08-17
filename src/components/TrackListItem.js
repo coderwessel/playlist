@@ -1,11 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
 import ReorderIcon from '@material-ui/icons/Reorder';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MusicNoteIcon from '@material-ui/icons/MusicNote';
@@ -35,7 +33,10 @@ class TrackListItem extends React.PureComponent {
 
   state = {
     anchorEl: null,
+    isReorderSource: false
   };
+
+  help =() => {alert("help")}
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -49,22 +50,33 @@ class TrackListItem extends React.PureComponent {
     this.props.deleteaction()
     this.setState({ anchorEl: null });
   };
-  
+
   handlePlayNow = () => {
     this.props.activateaction()
     this.setState({ anchorEl: null });
   };
 
+  handleReorder = () => {
+      // this.setState({isReorderSource:true})
+      this.props.reorderaction()
+      if (!this.state.isReorderSource) this.setState({isReorderSource:true})
+  
+  };
+
+  componentWillReceiveProps ()  {
+    if(!this.props.isReorderSource)this.setState({isReorderSource:false})
+    else this.setState({isReorderSource:true})
+  }
 
   render () {
     const { classes } = this.props;
-
     const { anchorEl } = this.state;
-
-
-    return (<ListItem>
-      <IconButton className={classes.menuButton} color="inherit" aria-label="Reorder">
-        <ReorderIcon />
+    return (<ListItem   
+            key={this.props.key}
+   > 
+      <IconButton onClick={this.handleReorder}
+            className={classes.menuButton} color={(this.state.isReorderSource)?"secondary":"inherit"} aria-label="Reorder">
+        <ReorderIcon/>
       </IconButton>
       <Avatar src={this.props.art} className={classes.avatar}>
           {(this.props.active)?<MusicNoteIcon/>:''}
@@ -94,13 +106,16 @@ class TrackListItem extends React.PureComponent {
 }
 
 TrackListItem.propTypes = {
+  key: PropTypes.number.isRequired,
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   artist: PropTypes.string.isRequired,
   art: PropTypes.string.isRequired,
   active: PropTypes.bool.isRequired,
   deleteaction: PropTypes.func.isRequired,
-  activateaction: PropTypes.func.isRequired
+  activateaction: PropTypes.func.isRequired,
+  reorderaction: PropTypes.func.isRequired,
+  isReorderSource: PropTypes.bool.isRequired
 };
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)
