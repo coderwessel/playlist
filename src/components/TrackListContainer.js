@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import TrackListItem from './TrackListItem.js'
 import {addTrack, delTrack, activateTrack, moveTrack} from '../actions/tracklist'
+import {setReorderSource} from '../actions/reorder'
 
 const styles = theme => ({
   container: {
@@ -39,18 +40,21 @@ class TrackListContainer extends PureComponent {
     //       (roerder source is null & reordering is false)
     if (this.state.reordering && index === this.state.reorderSource){
       this.setState({reorderSource: -1, reordering: false})
+      this.props.setReorderSource(-1)
 
     }
 
     // if !reordering => start reorder and set index as source
     else if (!this.state.reordering){
       this.setState({reorderSource: index, reordering: true})
+      this.props.setReorderSource(index)
     }
 
     // if reordering and index !=spource => move track in redux store to target 
     //  and stop reordering 
     else if (this.state.reordering && index != this.state.reorderSource){
       this.setState({reorderSource: -1, reordering: false})
+      this.props.setReorderSource(-1)
       this.props.moveTrack(this.state.reorderSource, index)       
     }
   }
@@ -63,7 +67,7 @@ class TrackListContainer extends PureComponent {
         <List className={classes.inner}>
           {tracklist.map((i,index) => 
              <TrackListItem 
-                            key={index}
+                            index={index}
                             artist={i.artist} 
                             title={i.title} 
                             art={i.art} 
@@ -96,14 +100,14 @@ TrackListContainer.propTypes = {
 //redux
 const mapStateToProps = function (state) {
   return {
-    tracklist: state.tracklist
-// games: state.games
+    tracklist: state.tracklist,
+    reorder: state.reorder
   }
 }
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)
 export default withStyles(styles) (connect(mapStateToProps, 
-  {addTrack, delTrack, activateTrack, moveTrack}
+  {setReorderSource, addTrack, delTrack, activateTrack, moveTrack}
 )(TrackListContainer))
 
 
