@@ -12,6 +12,7 @@ import Downshift from 'downshift'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
 import { addTrack } from '../actions/tracklist'
+import { fetchSearchTracks} from '../actions/searchresults'
 
 const styles = theme =>({
   textField: {
@@ -47,49 +48,6 @@ const styles = theme =>({
   },
 })
 
-const suggestions = [
-  { label: 'Toto - Rosanna',
-    artist: 'Toto',
-    title: 'Rosanna',
-    art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
-    duration: 241 },
-  { label: 'Cure - Forest',
-  artist: 'Cure',
-  title: 'Forest',
-  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
-  duration: 241 },
-  { label: 'Prince - Kiss',
-  artist: 'Prince',
-  title: 'Kiss',
-  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
-  duration: 241 },
-  { label: 'Metallica - Nothing else Matters',
-  artist: 'Metallica',
-  title: 'Nothing else Matters',
-  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
-  duration: 241 },
-  { label: 'David Bowie - Let\'s Dance',
-  artist: 'David Bowie',
-  title: 'Let\'s Dance',
-  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
-  duration: 241 },
-  { label: 'Calvin Harris - Colors',
-  artist: 'Calvin Harris',
-  title: 'Colors',
-  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
-  duration: 241 }
-]
-
-// function handleMenuItemClick (track){
-//   // alert(`${track.label} was clicked`)
-//   // var flap = {artist,title,art,duration} = track
-//   addTrack({artist: track.artist,
-//     title:track.title,
-//     art:track.art,
-//     duration:track.duration})
-// }
-
-
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
 
@@ -107,11 +65,11 @@ function renderInput(inputProps) {
   );
 }
 
-function renderSuggestion({ suggestion, index, 
+function renderSuggestion({ suggestion, index,
     itemProps, highlightedIndex, selectedItem, handleMenuItemClick }) {
   const isHighlighted = highlightedIndex === index;
-  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
-
+  const label = selectedItem ? selectedItem.label : '' //had to change this to account for label
+  const isSelected = label.indexOf(suggestion.label) > -1;
   return (
     <MenuItem
       {...itemProps}
@@ -121,11 +79,9 @@ function renderSuggestion({ suggestion, index,
       style={{
         fontWeight: isSelected ? 500 : 400,
       }}
-      onClick  =  {handleMenuItemClick.bind(this, suggestion)}
-      onSelect  =  {handleMenuItemClick.bind(this, suggestion)}
+
     >
       {suggestion.label}
-      
     </MenuItem>
   );
 }
@@ -136,38 +92,63 @@ renderSuggestion.propTypes = {
   itemProps: PropTypes.object,
   selectedItem: PropTypes.string,
   suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
-  handleMenuItemClick: PropTypes.func
 };
 
-function getSuggestions(inputValue) {
-  let count = 0;
+//ha to account for mulitple matches like "da bo" => DAvid BOwie
+//TODO: Rephrase ... ;)
+function zitErIn(die, indie){
+  const uitslag = (indie.toLowerCase().indexOf(die.toLowerCase()) !== -1)
+  // console.log(`Zit ${die} in ${indie} ?  ${uitslag}`)
+  return uitslag
+
+}
+
+//TODO: Rephrase ... ;)
+function zitErAllemaalIn(diedingen, indie){
+  const uitslag = diedingen.findIndex((datding) => !zitErIn(datding,indie)) === -1
+  // console.log(`Zitten al ${diedingen} in ${indie} ?  ${uitslag}`)
+  return uitslag
+}
+
+function getSuggestions(inputValue, suggestions, updateStore) {
+  let count = 0
+  // do something with redux store (get suggestions from lastfm api or cache)
+  updateStore(inputValue)
+
+  //this for getting mulitpple matches
+  const inputLiterals = inputValue.split(' ')
 
   return suggestions.filter(suggestion => {
     const keep =
-      (!inputValue || suggestion.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) &&
-      count < 5;
+      // (!inputValue || inputLiterals.filter(
+      //   (lit) => suggestion.label.toLowerCase().indexOf(lit.toLowerCase()) === -1) === -1 ) &&
+      // count < 5
+      //
+      // (!inputValue || suggestion.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) &&
+      // count < 5
+
+      // (!inputValue || zitErIn(inputValue, suggestion.label)) && count < 5
+      (!inputValue || zitErAllemaalIn(inputLiterals, suggestion.label)) && count < 5
 
     if (keep) {
-      count += 1;
+      count += 1
     }
 
-    return keep;
-  });
+    return keep
+  })
 }
 
 class SearchBarContainer extends React.PureComponent {
   state = {  };
 
-  // TODO: how do I add the slection to the playlist??
-  // handleChange = (e) => {
-  //     this.setState({ [e.target.name]: e.target.value })
-  //   }
-
   render () {
-    const { classes } = this.props;
+    const { classes } = this.props
+    const { searchresults} = this.props
     return (
       <div className={classes.root}>
-      <Downshift>
+      {/* on select add track (redux)
+       make sure to show item.label as for selected item */}
+      <Downshift onSelect={flap => {this.props.addTrack(flap)}} itemToString={item=>item.label}>
         {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
           <div className={classes.container}>
             {renderInput({
@@ -184,14 +165,14 @@ class SearchBarContainer extends React.PureComponent {
            </IconButton> */}
             {isOpen ? (
               <Paper className={classes.paper} square>
-                {getSuggestions(inputValue).map((suggestion, index) =>
+                {getSuggestions(inputValue, searchresults.tracks, this.props.fetchSearchTracks).map((suggestion, index) =>
                   renderSuggestion({
                     suggestion,
                     index,
-                    itemProps: getItemProps({ item: suggestion.label }),
+                    //item: suggestion (instead of suggestion.label) this is so we can pas whole item to addtrack on select
+                    itemProps: getItemProps({ item: suggestion}),
                     highlightedIndex,
                     selectedItem,
-                    handleMenuItemClick: this.props.addTrack
                   }),
                 )}
               </Paper>
@@ -208,12 +189,11 @@ SearchBarContainer.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-// TODO: How do I map the currently playing track in my state...
+// we need searchresults for the suggestion list.
 const mapStateToProps = function (state) {
   return {
-    tracklist: state.tracklist
+    searchresults: state.searchresults
   }
 }
 
-// export default connect(null, { addAlbum })(AlbumsListContainer)
-export default withStyles(styles) (connect( null, {addTrack})(SearchBarContainer));
+export default withStyles(styles) (connect( mapStateToProps, {addTrack, fetchSearchTracks})(SearchBarContainer));

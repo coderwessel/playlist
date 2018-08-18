@@ -1,7 +1,7 @@
-import {ACTIVATE_TRACK, 
-  ACTIVATE_NEXT_TRACK, 
-  ACTIVATE_PREVIOUS_TRACK, 
-  ADD_TRACK, 
+import {ACTIVATE_TRACK,
+  ACTIVATE_NEXT_TRACK,
+  ACTIVATE_PREVIOUS_TRACK,
+  ADD_TRACK,
   DEL_TRACK,
   MOVE_TRACK} from '../actions/tracklist'
 
@@ -11,7 +11,7 @@ const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case ADD_TRACK:
     return [...state,action.payload]
-    
+
     case DEL_TRACK:
     return [...state].filter( (item,index) => index != action.payload)
 
@@ -33,7 +33,7 @@ const reducer = (state = initialState, action = {}) => {
 
       case state.length-1: // current == last track => do nothing
         return state
-        
+
       default: // deactivate current track and activate next track
         const nextTrack = currentTrack+1
         return state.map( (item,index) => {
@@ -43,7 +43,7 @@ const reducer = (state = initialState, action = {}) => {
           return itemcopy
         })
       }
-      
+
     case ACTIVATE_PREVIOUS_TRACK:
       if (state.length === 0) return state // no tracks => do nothing
       switch (currentTrack){
@@ -54,7 +54,7 @@ const reducer = (state = initialState, action = {}) => {
 
       case 0: // current == first track => do nothing
         return state
-        
+
       default: // deactivate current track and activate previous track
         const previousTrack = currentTrack-1
         return state.map( (item,index) => {
@@ -64,7 +64,7 @@ const reducer = (state = initialState, action = {}) => {
           return itemcopy
         })
       }
-    
+
     case MOVE_TRACK:
       if (action.payload.from >= 0 && action.payload.from < state.length &&
         action.payload.to >= 0 && action.payload.to < state.length &&
@@ -73,16 +73,16 @@ const reducer = (state = initialState, action = {}) => {
           const newstate = [...state]
           newstate.splice(action.payload.from,1)
           newstate.splice(action.payload.to,0,source)
-          return newstate  
+          return newstate
         }
       else return state
-    
+
     default:
     return state
   }
 }
 
-const initialState = 
+const initialState =
 [
   {
   active: false,

@@ -28,13 +28,13 @@ const styles = theme => ({
 });
 
 class TrackListContainer extends PureComponent {
-  // TODO: Add drag and drop support, see https://codepen.io/adamaoc/pen/GoKZKE 
+  // TODO: Add drag and drop support, see https://codepen.io/adamaoc/pen/GoKZKE
   state = {
     reordering: false,
     reorderSource: -1,
     // reorderTarget: null // niet nodig
   };
-  
+
   Reorder(index) {
     // if reordering and index is reorderSource => stop reordeering
     //       (roerder source is null & reordering is false)
@@ -50,28 +50,28 @@ class TrackListContainer extends PureComponent {
       this.props.setReorderSource(index)
     }
 
-    // if reordering and index !=spource => move track in redux store to target 
-    //  and stop reordering 
+    // if reordering and index !=spource => move track in redux store to target
+    //  and stop reordering
     else if (this.state.reordering && index != this.state.reorderSource){
       this.setState({reorderSource: -1, reordering: false})
       this.props.setReorderSource(-1)
-      this.props.moveTrack(this.state.reorderSource, index)       
+      this.props.moveTrack(this.state.reorderSource, index)
     }
   }
 
   render () {
-    const { classes } = this.props;
+    const { classes } = this.props
     const {tracklist} = this.props
     return (
-      <div className={classes.container}>        
+      <div className={classes.container}>
         <List className={classes.inner}>
-          {tracklist.map((i,index) => 
-             <TrackListItem 
+          {tracklist.map((i,index) =>
+             <TrackListItem
                             index={index}
-                            artist={i.artist} 
-                            title={i.title} 
-                            art={i.art} 
-                            active={i.active} 
+                            artist={i.artist}
+                            title={i.title}
+                            art={i.art}
+                            active={i.active}
                             deleteaction={this.props.delTrack.bind(this,index)}
                             activateaction={this.props.activateTrack.bind(this,index)}
                             reorderaction={this.Reorder.bind(this,index)}
@@ -106,8 +106,6 @@ const mapStateToProps = function (state) {
 }
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)
-export default withStyles(styles) (connect(mapStateToProps, 
+export default withStyles(styles) (connect(mapStateToProps,
   {setReorderSource, addTrack, delTrack, activateTrack, moveTrack}
 )(TrackListContainer))
-
-
