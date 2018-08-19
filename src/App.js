@@ -7,6 +7,8 @@ import StatusBarContainer from './components/StatusBarContainer.js'
 import SearchBarContainer from './components/SearchBarContainer.js'
 import TrackListContainer from './components/TrackListContainer.js'
 import TrackControlsContainer from './components/TrackControlsContainer.js'
+import AudioContainer from './components/AudioContainer.js'
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -18,11 +20,14 @@ class App extends Component {
     return (
          <Provider store={store}>
               <div className="App">
-              
+
                 <StatusBarContainer/>
+<AudioContainer/>
                 <SearchBarContainer/>
+
                 <TrackListContainer/>
                 <TrackControlsContainer/>
+                
               </div>
         </Provider>
     );
