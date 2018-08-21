@@ -8,9 +8,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import TrackListItem from './TrackListItem.js'
-import {addTrack, delTrack, activateTrack, moveTrack} from '../actions/tracklist'
+import {addTrack, delTrack, activateTrack, moveTrack, activateNextTrack} from '../actions/tracklist'
 import {setReorderSource} from '../actions/reorder'
-
+import {loadTrack, startPlay} from '../actions/audiojobq'
 const styles = theme => ({
   container: {
     position: 'fixed',
@@ -62,6 +62,19 @@ class TrackListContainer extends PureComponent {
   render () {
     const { classes } = this.props
     const {tracklist} = this.props
+    const {audio} = this.props
+    const activeTrackIndex = tracklist.findIndex(track => track.active)
+    if (activeTrackIndex !== -1) {
+      const activeTitle = tracklist[activeTrackIndex].title
+      const activeArtist = tracklist[activeTrackIndex].artist
+      if (audio.artist != activeArtist || audio.title != activeTitle) {
+       this.props.loadTrack({artist: activeArtist, title: activeTitle})
+       this.props.startPlay()
+       // this.props.startPlay()
+    }}
+
+    if (audio.ended) this.props.activateNextTrack()
+
     return (
       <div className={classes.container}>
         <List className={classes.inner}>
@@ -101,11 +114,12 @@ TrackListContainer.propTypes = {
 const mapStateToProps = function (state) {
   return {
     tracklist: state.tracklist,
-    reorder: state.reorder
+    reorder: state.reorder,
+    audio: state.audio
   }
 }
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)
 export default withStyles(styles) (connect(mapStateToProps,
-  {setReorderSource, addTrack, delTrack, activateTrack, moveTrack}
+  {setReorderSource, addTrack, delTrack, activateTrack, activateNextTrack, moveTrack, loadTrack, startPlay}
 )(TrackListContainer))

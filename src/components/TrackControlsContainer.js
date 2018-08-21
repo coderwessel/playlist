@@ -7,9 +7,10 @@ import IconButton from '@material-ui/core/IconButton';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
+import PauseIcon from '@material-ui/icons/Pause'
 import {activateNextTrack, activatePreviousTrack} from '../actions/tracklist'
-
-
+import {playAudioTrack, pauseAudioTrack} from '../actions/audio'
+import {pausePlay, startPlay} from '../actions/audiojobq'
 const styles = theme =>({
   container: {
     position: 'fixed',
@@ -27,6 +28,7 @@ class TrackControlsContainer extends React.PureComponent {
 
   render () {
     const { classes } = this.props;
+    const {audio} = this.props
     return (
       <div className={classes.container}>
           <TrackProgressBarContainer/>
@@ -34,8 +36,8 @@ class TrackControlsContainer extends React.PureComponent {
           onClick ={this.props.activatePreviousTrack}>
             <SkipPreviousIcon />
           </IconButton>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Search">
-            <PlayArrowIcon />
+          <IconButton className={classes.menuButton} onClick ={(!audio.playing)?this.props.startPlay:this.props.pausePlay} color="inherit" aria-label="Search">
+            {(!audio.playing)?<PlayArrowIcon />:<PauseIcon/>}
           </IconButton>
           <IconButton className={classes.menuButton} color="inherit" aria-label="Search"
           onClick ={this.props.activateNextTrack}>
@@ -53,10 +55,11 @@ TrackControlsContainer.propTypes = {
 // TODO: How do I map the currently playing track in my state...
 const mapStateToProps = (state) => {
   return {
-    tracklist: state.tracklist
+    tracklist: state.tracklist,
+    audio: state.audio
   }
 }
 
 
 // export default connect(null, { addAlbum })(AlbumsListContainer)
-export default withStyles(styles) (connect(mapStateToProps, {activateNextTrack, activatePreviousTrack})(TrackControlsContainer));
+export default withStyles(styles) (connect(mapStateToProps, {pausePlay, startPlay, playAudioTrack, pauseAudioTrack, activateNextTrack, activatePreviousTrack})(TrackControlsContainer));

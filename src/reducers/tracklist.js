@@ -92,7 +92,7 @@ const initialState =
   duration: 241
   },
   {
-  active: true,
+  active: false,
   artist: 'Andre Hazes',
   title: 'De Vlieger',
   art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',

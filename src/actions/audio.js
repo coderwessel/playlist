@@ -1,8 +1,11 @@
+import store from '../store'
+
 export const UPDATE_SOURCE = 'UPDATE_SOURCE'
 export const PLAY_AUDIO_TRACK = 'PLAY_AUDIO_TRACK'
 export const PAUSE_AUDIO_TRACK = 'PAUSE_AUDIO_TRACK'
+export const RESUME_AUDIO_TRACK = 'PAUSE_AUDIO_TRACK'
 export const SET_AUDIO_POSITION = 'SET_AUDIO_POSITION'
-export const SET_AUDIO_DURATION = 'ACTIVATE_PREVIOUS_TRACK'
+export const SET_AUDIO_DURATION = 'SET_AUDIO_DURATION'
 export const END_AUDIO_TRACK = 'END_AUDIO_TRACK'
 
 export function setAudioStream({artist: artist, title: title}) {
@@ -12,15 +15,16 @@ export function setAudioStream({artist: artist, title: title}) {
   return function (dispatch){
     dispatch({
       type: UPDATE_SOURCE,
-      payload: streamURL
+      payload: {source: streamURL, artist:artist, title: title}
     })
   }
 }
 
 export function playAudioTrack(){
   return function (dispatch){
-    dispatch({
-      type: PLAY_AUDIO_TRACK
+		const actiontype=(store.getState().audio.paused)?RESUME_AUDIO_TRACK:PLAY_AUDIO_TRACK
+		dispatch({
+      type: actiontype
     })
   }
 }
@@ -42,11 +46,15 @@ export function endAudioTrack(){
   }
 }
 
-export function setAudioPosition(msec){
+export function setAudioPosition(pos,dur){
   return function (dispatch){
     dispatch({
       type: SET_AUDIO_POSITION,
-      payload: msec
+      payload: pos
+    })
+		dispatch({
+      type: SET_AUDIO_DURATION,
+      payload: dur
     })
   }
 }
