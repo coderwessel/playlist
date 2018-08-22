@@ -14,7 +14,7 @@ const reducer = (state = initialState, action = {}) => {
     return [...state,action.payload]
 
     case DEL_TRACK:
-    return [...state].filter( (item,index) => index != action.payload)
+    return [...state].filter( (item,index) => index !== action.payload)
 
     case ACTIVATE_TRACK:
     return state.map( (item,index) => {
@@ -30,9 +30,9 @@ const reducer = (state = initialState, action = {}) => {
     currentTrack = state.findIndex ((index) => index.active) //find current active track index
     console.log(`current active is ${currentTrack}`)
     //1. current active is last in list: do nothing
-    if (currentTrack == state.length-1) return state
+    if (currentTrack === state.length-1) return state
     //2. there is no active: make first item activeTrack
-    if (currentTrack===-1) {
+    if (currentTrack === -1) {
       newstate = [...state]
       newstate[0].active =true
       return newstate }
@@ -48,7 +48,7 @@ const reducer = (state = initialState, action = {}) => {
     else alert('error executing next track active')
     //5. anything else: throw error
 
-
+    break
 
     case ACTIVATE_PREVIOUS_TRACK:
     currentTrack = state.findIndex ((index) => index.active) //find current active track index
@@ -75,7 +75,7 @@ const reducer = (state = initialState, action = {}) => {
     case MOVE_TRACK:
       if (action.payload.from >= 0 && action.payload.from < state.length &&
         action.payload.to >= 0 && action.payload.to < state.length &&
-        action.payload.from != action.payload.to){
+        action.payload.from !== action.payload.to){
           const source = state[action.payload.from]
           const newstate = [...state]
           newstate.splice(action.payload.from,1)

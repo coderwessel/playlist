@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import {activateNextTrack} from '../actions/tracklist'
 import {setAudioStream, playAudioTrack, pauseAudioTrack, endAudioTrack} from '../actions/audio'
@@ -17,8 +17,8 @@ import {
 class AudioContainer extends Component {
   state = {  }
 
-  constructor(props) {
-    super(props);
+  componentWillMount() {
+    // super(props);
     // if (audio.loaded)
     this.audio = new Audio()
     this.audio.onended = (e) => {

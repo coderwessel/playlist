@@ -3,10 +3,10 @@ import {
   START_PLAY,
   PAUSE_PLAY,
   RESUME_PLAY,
-  STOP_PLAY,
+  // STOP_PLAY,
   SET_POSITION,
   JOB_SUCCES,
-  JOB_FAIL
+  // JOB_FAIL
 } from '../actions/audiojobq'
 
 const reducer = (state = initialState, action = {}) => {

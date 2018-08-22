@@ -9,11 +9,11 @@ import TrackListContainer from './components/TrackListContainer.js'
 import TrackControlsContainer from './components/TrackControlsContainer.js'
 import AudioContainer from './components/AudioContainer.js'
 
-const styles = {
-  root: {
-    flexGrow: 1,
-  },
-};
+// const styles = {
+//   root: {
+//     flexGrow: 1,
+//   },
+// };
 
 class App extends Component {
   render() {
@@ -27,7 +27,7 @@ class App extends Component {
 
                 <TrackListContainer/>
                 <TrackControlsContainer/>
-                
+
               </div>
         </Provider>
     );

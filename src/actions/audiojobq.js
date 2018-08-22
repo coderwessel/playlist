@@ -9,7 +9,7 @@ export const SET_POSITION = 'SET_POSITION'
 export const JOB_SUCCES = 'JOB_SUCCES'
 export const JOB_FAIL = 'JOB_FAIL'
 
-export function loadTrack({artist: artist, title: title}) {
+export function loadTrack({artist, title}) {
 
   return function (dispatch){
     dispatch({

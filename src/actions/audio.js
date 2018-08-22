@@ -7,7 +7,7 @@ export const RESUME_AUDIO_TRACK = 'PAUSE_AUDIO_TRACK'
 
 export const END_AUDIO_TRACK = 'END_AUDIO_TRACK'
 
-export function setAudioStream({artist: artist, title: title}) {
+export function setAudioStream({artist, title}) {
 	const streamquery="/?play="
 	const streamURL= process.env.REACT_APP_STREAM_HOST+streamquery+artist.replace(/[^a-zA-Z0-9 ]/g, " ")+" "+title.replace(/[^a-zA-Z0-9 ]/g, " ")
     console.log(streamURL)
@@ -44,4 +44,3 @@ export function endAudioTrack(){
     })
   }
 }
-

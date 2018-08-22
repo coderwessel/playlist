@@ -46,7 +46,7 @@ class TrackListItem extends React.PureComponent {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
-  
+
   handleDelete = () => {
     this.props.deleteaction()
     this.setState({ anchorEl: null });
@@ -61,7 +61,7 @@ class TrackListItem extends React.PureComponent {
       // this.setState({isReorderSource:true})
       this.props.reorderaction()
       // if (!this.state.isReorderSource) this.setState({isReorderSource:true})
-  
+
   };
 
   // componentWillReceiveProps ()  {
@@ -75,9 +75,9 @@ class TrackListItem extends React.PureComponent {
     // const { reorder } = this.state;
     const {reorder} = this.props;
 
-    return (<ListItem   
+    return (<ListItem
             key={this.props.index}
-   > 
+   >
       <IconButton onClick={this.handleReorder}
             className={classes.menuButton} color={(Number(reorder.index)===this.props.index)?"secondary":"inherit"} aria-label="Reorder">
         <ReorderIcon/>
@@ -100,8 +100,8 @@ class TrackListItem extends React.PureComponent {
              {text: "Play Now", action: this.handlePlayNow},
              {text: "Play Next", action: this.handleClose},
              {text: "Move to Last", action: this.handleClose}
-            ].map((item) => 
-          (<MenuItem onClick={item.action}>{item.text}</MenuItem>)
+           ].map((item, index) =>
+          (<MenuItem key={index} onClick={item.action}>{item.text}</MenuItem>)
         )}
         </Menu>
       </ListItem>
