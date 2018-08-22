@@ -73,8 +73,6 @@ class TrackListContainer extends PureComponent {
        // this.props.startPlay()
     }}
 
-    if (audio.ended) this.props.activateNextTrack()
-
     return (
       <div className={classes.container}>
         <List className={classes.inner}>

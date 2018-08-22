@@ -41,6 +41,7 @@ export function activateTrack(trackindex) {
 }
 
 export function activateNextTrack() {
+    console.log('activateNExtTrack action was called')
     return function (dispatch){
         dispatch({
           type: ACTIVATE_NEXT_TRACK

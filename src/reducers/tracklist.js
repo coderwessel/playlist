@@ -7,6 +7,7 @@ import {ACTIVATE_TRACK,
 
 const reducer = (state = initialState, action = {}) => {
   let currentTrack = -1
+  let newstate = []
 
   switch (action.type) {
     case ADD_TRACK:
@@ -24,27 +25,30 @@ const reducer = (state = initialState, action = {}) => {
     })
 
     case ACTIVATE_NEXT_TRACK:
-      if (state.length === 0) return state
-      currentTrack = state.findIndex ((index) => index.active) //find current active track index
-      // no tracks => do nothing
-      switch (currentTrack){
-      case -1: // no current track => make first track active
-        const newState = [...state]
-        newState[0].active=true
-        return newState
+    //what to do {
+    //determine which track is active.
+    currentTrack = state.findIndex ((index) => index.active) //find current active track index
+    console.log(`current active is ${currentTrack}`)
+    //1. current active is last in list: do nothing
+    if (currentTrack == state.length-1) return state
+    //2. there is no active: make first item activeTrack
+    if (currentTrack===-1) {
+      newstate = [...state]
+      newstate[0].active =true
+      return newstate }
+    //3. list is empty: do nothing
+    if (state.length === 0) return state
+    //4. there is an active track which is not the last: make next rack active
+    if (currentTrack >=0 && currentTrack < state.length -1) {
+       newstate = [...state]
+       newstate[currentTrack].active = false
+       newstate[currentTrack+1].active = true
+       return newstate
+    }
+    else alert('error executing next track active')
+    //5. anything else: throw error
 
-      case state.length-1: // current == last track => do nothing
-        return state
 
-      default: // deactivate current track and activate next track
-        const nextTrack = currentTrack+1
-        return state.map( (item,index) => {
-          let itemcopy = item
-          if (index === currentTrack) itemcopy.active = false
-          else if (index === nextTrack) itemcopy.active = true
-          return itemcopy
-        })
-      }
 
     case ACTIVATE_PREVIOUS_TRACK:
     currentTrack = state.findIndex ((index) => index.active) //find current active track index
@@ -100,7 +104,22 @@ const initialState =
   title: 'De Vlieger',
   art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
   duration: 205
+  },
+  {
+  active: false,
+  artist: 'David Bowie',
+  title: 'Heroes',
+  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
+  duration: 241
+  },
+  {
+  active: false,
+  artist: 'Beatles',
+  title: 'Hello',
+  art: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScHaNIyjHbvSiCnhweKKXHy0gEu7FRwfjJIQOSelHeuVRClNveASNKDr0uECnC5BQTcMQ',
+  duration: 205
   }
+
 ]
 
 // probeer eens wat....

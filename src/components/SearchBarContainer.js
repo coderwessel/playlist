@@ -148,7 +148,7 @@ class SearchBarContainer extends React.PureComponent {
       <div className={classes.root}>
       {/* on select add track (redux)
        make sure to show item.label as for selected item */}
-      <Downshift onSelect={flap => {this.props.addTrack(flap)}} itemToString={item=>item.label}>
+      <Downshift onSelect={track => {this.props.addTrack(track)}} itemToString={item=>(item!==null)?item.label:''}>
         {({ getInputProps, getItemProps, isOpen, inputValue, selectedItem, highlightedIndex }) => (
           <div className={classes.container}>
             {renderInput({

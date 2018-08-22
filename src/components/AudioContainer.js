@@ -21,7 +21,10 @@ class AudioContainer extends Component {
     super(props);
     // if (audio.loaded)
     this.audio = new Audio()
-    this.audio.onended = (e) => this.props.endAudioTrack()
+    this.audio.onended = (e) => {
+      this.props.endAudioTrack()
+      this.props.activateNextTrack()
+    }
     // this.audio.durationchange = (e) => alert('durationchange')
     // // this.audio.loadedmetadata = (e) => this.props.setAudioDuration(this.audio.duration)
     // this.audio.loadstart = (e) => alert('loadstart')
