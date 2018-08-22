@@ -2,8 +2,6 @@ import {UPDATE_SOURCE,
  PLAY_AUDIO_TRACK,
  PAUSE_AUDIO_TRACK,
  RESUME_AUDIO_TRACK,
- SET_AUDIO_POSITION,
- SET_AUDIO_DURATION,
 END_AUDIO_TRACK} from '../actions/audio'
 
  const reducer = (state = initialState, action = {}) => {
@@ -16,23 +14,21 @@ END_AUDIO_TRACK} from '../actions/audio'
          resume: false,
          loaded: true,
          ended: false,
-         position: 0,
-         duration: 0
-     }
+       }
      case PLAY_AUDIO_TRACK:
-     return {...state, playing:true, paused: false, resume: false}
+     return {...state, playing:true, paused: false, resume: false, ended:false}
 
      case RESUME_AUDIO_TRACK:
-     return {...state, playing: false, paused: false, resume: true}
+     return {...state, playing: false, paused: false, resume: true, ended:false}
 
      case PAUSE_AUDIO_TRACK:
-     return {...state, playing:false, paused: true, resume: false}
+     return {...state, playing:false, paused: true, resume: false, ended:false}
 
-     case SET_AUDIO_POSITION:
-     return {...state, position: action.payload}
+    //  case SET_AUDIO_POSITION:
+    //  return {...state, position: action.payload}
 
-     case SET_AUDIO_DURATION:
-     return {...state, duration: action.payload}
+    //  case SET_AUDIO_DURATION:
+    //  return {...state, duration: action.payload}
 
      case END_AUDIO_TRACK:
      return { ...state,

@@ -2,17 +2,16 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import {activateNextTrack} from '../actions/tracklist'
-import {setAudioStream, playAudioTrack, pauseAudioTrack, endAudioTrack, setAudioPosition, setAudioDuration} from '../actions/audio'
-import {loadTrack, startPlay, jobSucces} from '../actions/audiojobq'
+import {setAudioStream, playAudioTrack, pauseAudioTrack, endAudioTrack} from '../actions/audio'
+import {jobSucces} from '../actions/audiojobq'
+import {setAudioPosition, setAudioDuration} from '../actions/audioposition'
 import {
   LOAD_TRACK,
   START_PLAY,
   PAUSE_PLAY,
   RESUME_PLAY,
-  STOP_PLAY,
+  // STOP_PLAY,
   SET_POSITION,
-  JOB_SUCCES,
-  JOB_FAIL
 } from '../actions/audiojobq'
 
 class AudioContainer extends Component {
@@ -22,9 +21,23 @@ class AudioContainer extends Component {
     super(props);
     // if (audio.loaded)
     this.audio = new Audio()
-    this.audio.onended = this.props.endAudioTrack()
+    this.audio.onended = (e) => this.props.endAudioTrack()
+    // this.audio.durationchange = (e) => alert('durationchange')
+    // // this.audio.loadedmetadata = (e) => this.props.setAudioDuration(this.audio.duration)
+    // this.audio.loadstart = (e) => alert('loadstart')
+    // this.audio.loadedmetadata = (e) => alert('loadedmetadata')
+    // this.audio.loadeddata = (e) => alert('loadeddata')
+    // this.audio.progress = (e) => alert('progress')
+    // this.audio.canplay = (e) => alert('canplay')
+    // this.audio.canplaythrough = (e) => alert('canplaythrough')
+    // this.audio.pause = (e) => alert('paused')
+    // this.audio.playing = (e) => alert(`playing: ${this.audio.duration}`)
+
+
+
+
     // this.audio.ontimeupdate = this.updateAudio(this.props.setAudioDuration, this.props.setAudioPosition)
-    this.audio.ontimeupdate = (e) => {this.props.setAudioPosition(this.audio.currentTime, this.audio.duration)}
+    // this.audio.ontimeupdate = (e) => {this.props.setAudioPosition(this.audio.currentTime, this.audio.duration)}
   }
   // this.audio.play()// this.togglePlay = this.togglePlay.bind(this);
 
@@ -58,7 +71,7 @@ class AudioContainer extends Component {
   render () {
     //onthouden voor load audio
     const {audiojobq} = this.props
-    const {tracklist} = this.props
+    // const {tracklist} = this.props
 
 
 
@@ -78,6 +91,22 @@ class AudioContainer extends Component {
         console.log(`load ${streamURL}`)
         this.audio.src = streamURL
         this.props.setAudioStream({artist: artist, title: title})
+
+        setTimeout(
+            function() {
+                this.props.setAudioDuration(this.audio.duration)
+            }
+            .bind(this),
+            3000
+        )
+
+
+        // setTimeout(
+        //   // alert("Hello");
+        //   // this.props.setAudioDuration(this.audio.duration)
+        //   this.props.setAudioDuration(50)
+        //          , 10000)
+        // this.props.setAudioDuration(this.audio.duration)
         this.props.jobSucces()
 
         break

@@ -44,6 +44,7 @@ export function fetchSearchTracks(querytext) {
       .query({limit:process.env.REACT_APP_LASTFM_API_TRACK_SEARCH_LIMIT})
       .then(response => {
          if(response.body.results!==undefined){
+            //TODO: Why do it like this??
              const newcached = [...store.getState().searchresults.cached,
                                   {query: querytext,
                                     tracks: response.body.results.trackmatches.track

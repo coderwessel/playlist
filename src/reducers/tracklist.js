@@ -6,7 +6,7 @@ import {ACTIVATE_TRACK,
   MOVE_TRACK} from '../actions/tracklist'
 
 const reducer = (state = initialState, action = {}) => {
-  const currentTrack = state.findIndex ((index) => index.active) //find current active track index
+  let currentTrack = -1
 
   switch (action.type) {
     case ADD_TRACK:
@@ -24,7 +24,9 @@ const reducer = (state = initialState, action = {}) => {
     })
 
     case ACTIVATE_NEXT_TRACK:
-      if (state.length === 0) return state // no tracks => do nothing
+      if (state.length === 0) return state
+      currentTrack = state.findIndex ((index) => index.active) //find current active track index
+      // no tracks => do nothing
       switch (currentTrack){
       case -1: // no current track => make first track active
         const newState = [...state]
@@ -45,7 +47,8 @@ const reducer = (state = initialState, action = {}) => {
       }
 
     case ACTIVATE_PREVIOUS_TRACK:
-      if (state.length === 0) return state // no tracks => do nothing
+    currentTrack = state.findIndex ((index) => index.active) //find current active track index
+    if (state.length === 0) return state // no tracks => do nothing
       switch (currentTrack){
       case -1: // no current track => make last track active
         const newState = [...state]

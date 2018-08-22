@@ -3,6 +3,7 @@ import tracklist from './tracklist'
 import reorder from './reorder'
 import searchresults from './searchresults'
 import audio from './audio'
+import audioposition from './audioposition'
 import audiojobq from './audiojobq'
 
 
@@ -11,5 +12,6 @@ export default {
     reorder: reorder,
     searchresults: searchresults,
     audio: audio,
-    audiojobq: audiojobq
+    audiojobq: audiojobq,
+    audioposition: audioposition
   };

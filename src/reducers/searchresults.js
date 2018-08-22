@@ -1,6 +1,8 @@
 import {  FETCH_SEARCH_TRACKS, START_SEARCH, END_SEARCH, UPDATE_SEARCH_CACHE} from '../actions/searchresults'
+const SEARCH_CACHE_MAX_SIZE = 30
 
 const reducer = (state = initialState, action = {}) => {
+  let newcached = []      
 
   switch (action.type) {
     case START_SEARCH:
@@ -12,8 +14,10 @@ const reducer = (state = initialState, action = {}) => {
             searching: false}
 
     case UPDATE_SEARCH_CACHE:
+    newcached = [...state.cached, action.payload]
+    if (newcached.length > SEARCH_CACHE_MAX_SIZE) newcached.shift()
     return {...state,
-            cached: action.payload}
+            cached: newcached}
 
     case FETCH_SEARCH_TRACKS:
     return {...state,
@@ -40,12 +44,5 @@ const initialState =
   cached: [],
   searching: false
 }
-
-
-// probeer eens wat....
-// const initialState = [{
-//   id: 3,
-//   title: 'wessel'
-// }]
 
 export default reducer
