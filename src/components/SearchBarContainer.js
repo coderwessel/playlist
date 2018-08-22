@@ -113,7 +113,7 @@ function zitErAllemaalIn(diedingen, indie){
 function getSuggestions(inputValue, suggestions, updateStore) {
   let count = 0
   // do something with redux store (get suggestions from lastfm api or cache)
-  updateStore(inputValue)
+ updateStore(inputValue)
 
   //this for getting mulitpple matches
   const inputLiterals = inputValue.split(' ')
@@ -139,9 +139,10 @@ function getSuggestions(inputValue, suggestions, updateStore) {
 }
 
 class SearchBarContainer extends React.PureComponent {
-  state = {  };
+  // state = {  };
 
   render () {
+    console.log("rendering searchbar...")
     const { classes } = this.props
     const { searchresults} = this.props
     return (
@@ -165,7 +166,7 @@ class SearchBarContainer extends React.PureComponent {
            </IconButton> */}
             {isOpen ? (
               <Paper className={classes.paper} square>
-                {getSuggestions(inputValue, searchresults.tracks, this.props.fetchSearchTracks).map((suggestion, index) =>
+                {getSuggestions(inputValue, searchresults, this.props.fetchSearchTracks).map((suggestion, index) =>
                   renderSuggestion({
                     suggestion,
                     index,
@@ -192,7 +193,7 @@ SearchBarContainer.propTypes = {
 // we need searchresults for the suggestion list.
 const mapStateToProps = function (state) {
   return {
-    searchresults: state.searchresults
+    searchresults: state.searchresults.tracks
   }
 }
 

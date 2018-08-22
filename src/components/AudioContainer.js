@@ -21,6 +21,7 @@ class AudioContainer extends Component {
     // super(props);
     // if (audio.loaded)
     this.audio = new Audio()
+    this.audio.ontimeupdate = (e) => {this.props.setAudioPosition(this.audio.currentTime)}
     this.audio.onended = (e) => {
       this.props.endAudioTrack()
       this.props.activateNextTrack()
@@ -40,7 +41,6 @@ class AudioContainer extends Component {
 
 
     // this.audio.ontimeupdate = this.updateAudio(this.props.setAudioDuration, this.props.setAudioPosition)
-    // this.audio.ontimeupdate = (e) => {this.props.setAudioPosition(this.audio.currentTime, this.audio.duration)}
   }
   // this.audio.play()// this.togglePlay = this.togglePlay.bind(this);
 

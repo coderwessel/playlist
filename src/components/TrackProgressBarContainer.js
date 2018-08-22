@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {setPosition} from '../actions/audiojobq'
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -21,8 +22,9 @@ class TrackProgressBarContainer extends React.Component {
     return (
       <div className={classes.root}>
         <LinearProgress variant="determinate"  value={completed}
-            onClick={(e) => 
-               this.props.setPosition((e.pageX/window.innerWidth)*audioposition.duration)}/>
+        onClick={(e) =>
+           this.props.setPosition((e.pageX/window.innerWidth)*audioposition.duration)}
+        />
       </div>
     );
   }
