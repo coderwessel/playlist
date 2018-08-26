@@ -16,7 +16,7 @@ const styles = theme => ({
     position: 'fixed',
     width: '100%',
     // maxWidth: 360,
-    top: '150px',
+    top: '100px',
     bottom: '50px',
     overflowY: 'scroll',
     backgroundColor: theme.palette.background.paper,

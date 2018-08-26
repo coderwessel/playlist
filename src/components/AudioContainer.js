@@ -13,15 +13,28 @@ import {
   // STOP_PLAY,
   SET_POSITION,
 } from '../actions/audiojobq'
+const PROGRESS_BAR_UPDATE_INTERVAL =
+      (process.env.REACT_APP_PROGRESS_BAR_UPDATE_INTERVAL > 0) ?
+          process.env.REACT_APP_PROGRESS_BAR_UPDATE_INTERVAL : 5
 
 class AudioContainer extends Component {
-  state = {  }
+
+  state = {lastUpdate:0  }
+
+  updatePerSecond(){
+    if (this.state.lastUpdate <= this.audio.currentTime - PROGRESS_BAR_UPDATE_INTERVAL) {
+      this.setState({...this.state, lastUpdate: this.audio.currentTime})
+      this.props.setAudioPosition(this.audio.currentTime)
+    }
+  }
 
   componentWillMount() {
     // super(props);
     // if (audio.loaded)
     this.audio = new Audio()
-    this.audio.ontimeupdate = (e) => {this.props.setAudioPosition(this.audio.currentTime)}
+    // this.audio.ontimeupdate = (e) => {this.props.setAudioPosition(this.audio.currentTime)}
+    this.audio.ontimeupdate = this.updatePerSecond.bind(this)
+    // props.setAudioPosition(this.audio.currentTime)}
     this.audio.onended = (e) => {
       this.props.endAudioTrack()
       this.props.activateNextTrack()
@@ -82,6 +95,7 @@ class AudioContainer extends Component {
       //{job, payload} = audiojobq.jobs[0]
       const job = audiojobq.jobs[0].job
       const payload = audiojobq.jobs[0].payload
+      this.setState({...this.state, lastUpdate: 0})
       switch (job){
       case LOAD_TRACK:
         //{artist,title} = job.payload
@@ -121,7 +135,6 @@ class AudioContainer extends Component {
         break
 
       case PAUSE_PLAY:
-        this.setState({resumePosition:this.audio.currentTime})
         this.audio.pause()
         this.props.pauseAudioTrack()
         this.props.jobSucces()
@@ -136,7 +149,9 @@ class AudioContainer extends Component {
 
       case SET_POSITION:
         // this.audio.pause()
+
         this.audio.currentTime = payload
+        this.setState({...this.state, lastUpdate: 0})
         setAudioPosition(payload)
         // this.audio.play()
         // this.props.playAudioTrack()

@@ -21,12 +21,19 @@
   - play/pause button
   - use localhost streamer
 
-- save playlist
+- api
+- save playlist (+api)
 - share playlist by route (../dRgft)
+- publish v01 client + api
 - suggestions
   - similar tracks
   - albums
     - add albums as playlist
   - similar artists
 - partymode (Autoplay by suggestions)
+- REMOTE CONTROL 
+- version control
+- different players :youtube 
+- different players :spotify
+- personal playlists
 - cache music locally

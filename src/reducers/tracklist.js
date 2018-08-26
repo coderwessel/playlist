@@ -3,13 +3,18 @@ import {ACTIVATE_TRACK,
   ACTIVATE_PREVIOUS_TRACK,
   ADD_TRACK,
   DEL_TRACK,
-  MOVE_TRACK} from '../actions/tracklist'
+  MOVE_TRACK,
+  SET_TRACKLIST} from '../actions/tracklist'
 
 const reducer = (state = initialState, action = {}) => {
   let currentTrack = -1
   let newstate = []
 
   switch (action.type) {
+    case SET_TRACKLIST:
+    console.log(action.payload)
+    return action.payload
+
     case ADD_TRACK:
     return [...state,action.payload]
 

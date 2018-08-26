@@ -4,6 +4,16 @@ export const ACTIVATE_TRACK = 'ACTIVATE_TRACK'
 export const ACTIVATE_NEXT_TRACK = 'ACTIVATE_NEXT_TRACK'
 export const ACTIVATE_PREVIOUS_TRACK = 'ACTIVATE_PREVIOUS_TRACK'
 export const MOVE_TRACK = 'MOVE_TRACK'
+export const SET_TRACKLIST = 'SET_TRACKLIST'
+
+export function setTrackList(tracklist) {
+  return function (dispatch){
+      dispatch({
+        type: SET_TRACKLIST,
+        payload: tracklist
+      })
+  }
+}
 
 export function addTrack(track) {
     // return {

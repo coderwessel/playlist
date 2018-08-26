@@ -13,11 +13,6 @@ const styles = theme => ({
     objectFit: 'cover',
     height: '100%',
   },
-  trackitemtext: {
-    overflowX: 'scroll',
-    overflowY: 'none',
-    height: '25px',
-  }
 });
 
 class TrackItem extends React.PureComponent {
@@ -26,9 +21,7 @@ class TrackItem extends React.PureComponent {
     return (
       <ListItem>
       <Avatar src={this.props.art} className={classes.avatar}/>
-      <ListItemText
-          primary={`${this.props.artist} - ${this.props.title}` }
-          className={classes.trackitemtext} />
+      <ListItemText primary={`${this.props.artist} - ${this.props.title}`} />
       </ListItem>
     )
   }
