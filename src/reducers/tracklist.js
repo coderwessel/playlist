@@ -94,7 +94,8 @@ const reducer = (state = initialState, action = {}) => {
   }
 }
 
-const initialState =
+const initialState = []
+/*
 [
   {
   active: false,
@@ -127,6 +128,7 @@ const initialState =
 
 ]
 
+*/
 // probeer eens wat....
 // const initialState = [{
 //   id: 3,
