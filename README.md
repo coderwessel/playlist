@@ -1,6 +1,6 @@
 # manage and share playlists
 
-demo https://naughty-wiles-fe7bc9.netlify.com/(https://naughty-wiles-fe7bc9.netlify.com/)
+demo: [https://naughty-wiles-fe7bc9.netlify.com/](https://naughty-wiles-fe7bc9.netlify.com/)
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
